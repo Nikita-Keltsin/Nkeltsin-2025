@@ -1,5 +1,6 @@
 #ifndef MyStack_h
 #define MyStack_h
+#include <cstddef>
 
 template<class INF, class FRIEND>
 class ListNode {
@@ -9,7 +10,6 @@ private:
     ListNode(void) { next = nullptr; }
     friend FRIEND;
     
-    // Приватные методы для работы с копированием
     ListNode(const ListNode& other) : d(other.d), next(nullptr) {
         if (other.next != nullptr) {
             next = new ListNode(*other.next);
@@ -31,7 +31,7 @@ private:
 
 template<class INF>
 class MyStack {
-    typedef class ListNode<INF, MyStack<INF>> Node;
+    typedef class ListNode<INF, MyStack<INF> > Node;
     Node* top;
     
 public:

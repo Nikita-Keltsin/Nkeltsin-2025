@@ -35,7 +35,9 @@ void printStack(MyStack<int>& stack) {
 }
 
 int main() {
-    int N = 3960;
+    int N = 0;
+    std::cout << "Введите значение N:";
+    std::cin >> N;
     MyStack<int> stack;
     
     Multipliers(N, stack);
