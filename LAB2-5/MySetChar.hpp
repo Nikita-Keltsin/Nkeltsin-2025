@@ -8,6 +8,7 @@ class MySetChar : public MyVector<char*> {
 private:
     using MyVector<char*>::data;
     using MyVector<char*>::size;
+    using MyVector<char*>::capacity;
 
     int binary_find(const char* element) const {
         int left = 0;
@@ -25,6 +26,15 @@ private:
 
 public:
     using MyVector<char*>::MyVector;
+
+    // Правило пяти
+    MySetChar(const MySetChar& other) : MyVector<char*>(other) {}
+    MySetChar& operator=(const MySetChar& other) {
+        if (this != &other) {
+            MyVector<char*>::operator=(other);
+        }
+        return *this;
+    }
 
     bool is_element(const char* element) const {
         return binary_find(element) != -1;
@@ -47,13 +57,13 @@ public:
         return os;
     }
 
-    // Операторы множеств (аналогично MySet)
     MySetChar& operator+=(const MySetChar& other) {
         for (size_t i = 0; i < other.size; ++i) {
             this->add_element(other.data[i]);
         }
         return *this;
     }
+
     MySetChar& operator*=(const MySetChar& other) {
         MySetChar result;
         for (size_t i = 0; i < size; ++i) {
@@ -93,12 +103,10 @@ public:
     friend bool operator==(const MySetChar& lhs, const MySetChar& rhs) {
         if (lhs.size != rhs.size) return false;
         for (size_t i = 0; i < lhs.size; ++i) {
-            if (lhs.data[i] != rhs.data[i]) return false;
+            if (strcmp(lhs.data[i], rhs.data[i]) != 0) return false;
         }
         return true;
     }
-
-    // ... остальные операторы аналогично ...
 };
 
 #endif // MYSETCHAR_HPP

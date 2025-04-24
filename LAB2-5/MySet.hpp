@@ -9,6 +9,7 @@ class MySet : public MyVector<T> {
 private:
     using MyVector<T>::data;
     using MyVector<T>::size;
+    using MyVector<T>::capacity;
 
     int binary_find(const T& element) const {
         int left = 0;
@@ -26,11 +27,20 @@ private:
 public:
     using MyVector<T>::MyVector;
 
+    // Правило пяти
+    MySet(const MySet& other) : MyVector<T>(other) {}
+    MySet& operator=(const MySet& other) {
+        if (this != &other) {
+            MyVector<T>::operator=(other);
+        }
+        return *this;
+    }
+
     bool is_element(const T& element) const {
         return binary_find(element) != -1;
     }
 
-    void add_element(const T& element) override {
+    void add_element(const T& element) {
         if (!is_element(element)) {
             MyVector<T>::add_element(element);
             this->sort();
@@ -47,7 +57,6 @@ public:
         return os;
     }
 
-    // Операторы множеств
     MySet& operator+=(const MySet& other) {
         for (size_t i = 0; i < other.size; ++i) {
             this->add_element(other.data[i]);
