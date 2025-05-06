@@ -1,6 +1,6 @@
 #include <iostream>
-#include "MyVector.сpp"
-#include "MySet.сpp"
+#include "MyVector.cpp"
+#include "MySet.cpp"
 
 using namespace std;
 
