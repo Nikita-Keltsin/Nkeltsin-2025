@@ -7,20 +7,17 @@ void print(const MyVector<Organization*>& container) {
         std::cout << "Container is empty.\n";
         return;
     }
-    
     for (size_t i = 0; i < container.getSize(); ++i) {
-        std::cout << "\nIndex: " << i << "\n";
+        std::cout << "\nIndex " << i << ":\n";
         container[i]->show();
-        std::cout << "-----------------";
     }
-    std::cout << "\n";
 }
 
 void remove(MyVector<Organization*>& container, size_t index) {
     if (index < container.getSize()) {
         delete container[index];
         container.remove(index);
-        std::cout << "Element at index " << index << " removed.\n";
+        std::cout << "Removed element at index " << index << "\n";
     } else {
         std::cout << "Invalid index!\n";
     }
@@ -34,144 +31,126 @@ void clear(MyVector<Organization*>& container) {
     std::cout << "Container cleared.\n";
 }
 
-void addDemoData(MyVector<Organization*>& container) {
-    container.push_back(new InsuranceCompany("SafeLife", "123 Insurance St", 200, 5000, "Life insurance"));
-    container.push_back(new ShipbuildingCompany("OceanMaster", "456 Harbor Ave", 1500, 45, "Container ships"));
-    container.push_back(new Factory("SteelWorks", "789 Industrial Blvd", 800, "Steel beams", 10000));
-    std::cout << "Demo data added.\n";
+void demoMode() {
+    MyVector<Organization*> orgs;
+    
+    std::cout << "\n=== DEMO MODE ===\n";
+    
+    // 1. Добавление объектов
+    orgs.push_back(new InsuranceCompany("SafeLife", "123 Insurance St", 200, 5000, "Life"));
+    orgs.push_back(new ShipbuildingCompany("OceanMaster", "456 Harbor Ave", 1500, 45, "Container"));
+    orgs.push_back(new Factory("SteelWorks", "789 Industrial Blvd", 800, "Steel", 10000));
+    std::cout << "Added 3 organizations.\n";
+    
+    // 2. Вывод
+    std::cout << "\nCurrent organizations:\n";
+    print(orgs);
+    
+    // 3. Удаление
+    std::cout << "\nRemoving organization at index 1...\n";
+    remove(orgs, 1);
+    
+    // 4. Вывод после удаления
+    std::cout << "\nAfter removal:\n";
+    print(orgs);
+    
+    // 5. Очистка
+    std::cout << "\nClearing container...\n";
+    clear(orgs);
+    
+    // 6. Проверка
+    std::cout << "\nFinal state:\n";
+    print(orgs);
 }
 
-void addInsuranceCompany(MyVector<Organization*>& container) {
-    std::string name, address, specialization;
-    int employees, policies;
-    
-    std::cout << "Enter insurance company details:\n";
-    std::cout << "Name: ";
-    std::cin.ignore();
-    std::getline(std::cin, name);
-    
-    std::cout << "Address: ";
-    std::getline(std::cin, address);
-    
-    std::cout << "Employee count: ";
-    std::cin >> employees;
-    
-    std::cout << "Policies issued: ";
-    std::cin >> policies;
-    
-    std::cout << "Specialization: ";
-    std::cin.ignore();
-    std::getline(std::cin, specialization);
-    
-    container.push_back(new InsuranceCompany(name, address, employees, policies, specialization));
-    std::cout << "Insurance company added.\n";
-}
-
-void addShipbuildingCompany(MyVector<Organization*>& container) {
-    std::string name, address, shipType;
-    int employees, ships;
-    
-    std::cout << "Enter shipbuilding company details:\n";
-    std::cout << "Name: ";
-    std::cin.ignore();
-    std::getline(std::cin, name);
-    
-    std::cout << "Address: ";
-    std::getline(std::cin, address);
-    
-    std::cout << "Employee count: ";
-    std::cin >> employees;
-    
-    std::cout << "Ships built: ";
-    std::cin >> ships;
-    
-    std::cout << "Ship type: ";
-    std::cin.ignore();
-    std::getline(std::cin, shipType);
-    
-    container.push_back(new ShipbuildingCompany(name, address, employees, ships, shipType));
-    std::cout << "Shipbuilding company added.\n";
-}
-
-void addFactory(MyVector<Organization*>& container) {
-    std::string name, address, productType;
-    int employees, capacity;
-    
-    std::cout << "Enter factory details:\n";
-    std::cout << "Name: ";
-    std::cin.ignore();
-    std::getline(std::cin, name);
-    
-    std::cout << "Address: ";
-    std::getline(std::cin, address);
-    
-    std::cout << "Employee count: ";
-    std::cin >> employees;
-    
-    std::cout << "Product type: ";
-    std::cin.ignore();
-    std::getline(std::cin, productType);
-    
-    std::cout << "Production capacity: ";
-    std::cin >> capacity;
-    
-    container.push_back(new Factory(name, address, employees, productType, capacity));
-    std::cout << "Factory added.\n";
-}
-
-void showMenu() {
-    std::cout << "\n=== MAIN MENU ===\n"
-              << "1. Add demo data\n"
-              << "2. Add Insurance Company\n"
-              << "3. Add Shipbuilding Company\n"
-              << "4. Add Factory\n"
-              << "5. Print all organizations\n"
-              << "6. Remove organization\n"
-              << "7. Clear container\n"
-              << "0. Exit\n"
-              << "Your choice: ";
-}
-
-int main() {
-    MyVector<Organization*> organizations;
+void interactiveMode() {
+    MyVector<Organization*> orgs;
     int choice;
     
     do {
-        showMenu();
+        std::cout << "\n=== INTERACTIVE MODE ===\n"
+                  << "1. Add Insurance Company\n"
+                  << "2. Add Shipbuilding Company\n"
+                  << "3. Add Factory\n"
+                  << "4. Print all\n"
+                  << "5. Remove by index\n"
+                  << "6. Clear container\n"
+                  << "0. Back to main menu\n"
+                  << "Choice: ";
         std::cin >> choice;
         
-        switch (choice) {
-            case 1:
-                addDemoData(organizations);
-                break;
-            case 2:
-                addInsuranceCompany(organizations);
-                break;
-            case 3:
-                addShipbuildingCompany(organizations);
-                break;
-            case 4:
-                addFactory(organizations);
-                break;
-            case 5:
-                print(organizations);
-                break;
-            case 6: {
-                size_t index;
-                std::cout << "Enter index to remove: ";
-                std::cin >> index;
-                remove(organizations, index);
+        switch(choice) {
+            case 1: {
+                std::string name, address, spec;
+                int employees, policies;
+                
+                std::cout << "Name: "; std::cin.ignore(); std::getline(std::cin, name);
+                std::cout << "Address: "; std::getline(std::cin, address);
+                std::cout << "Employees: "; std::cin >> employees;
+                std::cout << "Policies: "; std::cin >> policies;
+                std::cout << "Specialization: "; std::cin.ignore(); std::getline(std::cin, spec);
+                
+                orgs.push_back(new InsuranceCompany(name, address, employees, policies, spec));
+                std::cout << "Added.\n";
                 break;
             }
-            case 7:
-                clear(organizations);
+            case 2: {
+                std::string name, address, type;
+                int employees, ships;
+                
+                std::cout << "Name: "; std::cin.ignore(); std::getline(std::cin, name);
+                std::cout << "Address: "; std::getline(std::cin, address);
+                std::cout << "Employees: "; std::cin >> employees;
+                std::cout << "Ships built: "; std::cin >> ships;
+                std::cout << "Ship type: "; std::cin.ignore(); std::getline(std::cin, type);
+                
+                orgs.push_back(new ShipbuildingCompany(name, address, employees, ships, type));
+                std::cout << "Added.\n";
                 break;
-            case 0:
-                clear(organizations);
-                std::cout << "Exiting...\n";
+            }
+            case 3: {
+                std::string name, address, product;
+                int employees, capacity;
+                
+                std::cout << "Name: "; std::cin.ignore(); std::getline(std::cin, name);
+                std::cout << "Address: "; std::getline(std::cin, address);
+                std::cout << "Employees: "; std::cin >> employees;
+                std::cout << "Product: "; std::cin.ignore(); std::getline(std::cin, product);
+                std::cout << "Capacity: "; std::cin >> capacity;
+                
+                orgs.push_back(new Factory(name, address, employees, product, capacity));
+                std::cout << "Added.\n";
                 break;
-            default:
-                std::cout << "Invalid choice. Try again.\n";
+            }
+            case 4: print(orgs); break;
+            case 5: {
+                size_t index;
+                std::cout << "Index to remove: "; std::cin >> index;
+                remove(orgs, index);
+                break;
+            }
+            case 6: clear(orgs); break;
+            case 0: clear(orgs); break;
+            default: std::cout << "Invalid choice.\n";
+        }
+    } while (choice != 0);
+}
+
+int main() {
+    int choice;
+    do {
+        std::cout << "\n=== MAIN MENU ===\n"
+                  << "1. Demo mode\n"
+                  << "2. Interactive mode\n"
+                  << "0. Exit\n"
+                  << "Choice: ";
+        std::cin >> choice;
+        
+        switch(choice) {
+            case 1: demoMode(); break;
+            case 2: interactiveMode(); break;
+            case 0: std::cout << "Exiting...\n"; break;
+            default: std::cout << "Invalid choice.\n";
         }
     } while (choice != 0);
     
