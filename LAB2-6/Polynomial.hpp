@@ -1,37 +1,24 @@
 #ifndef POLYNOMIAL_HPP
 #define POLYNOMIAL_HPP
 
+#include <vector>
 #include <iostream>
-
-class Term {
-public:
-    int coeff;  // коэффициент
-    int exp;    // степень x
-    
-    Term(int c = 0, int e = 0) : coeff(c), exp(e) {}
-};
 
 class Polynomial {
 private:
-    Term* terms;    // массив термов
-    int capacity;   // размер массива
-    int size;       // текущее количество термов
+    std::vector<int> coeffs;
+    std::vector<int> exps;
     
-    void resize();   // увеличить размер массива
-    void sort();     // сортировка по степеням
-    
+    void combineLikeTerms();
+
 public:
-    Polynomial();
-    ~Polynomial();
+    void addTerm(int coeff, int exp);
     
-    void addTerm(const Term& t);  // добавить терм
-    void simplify();              // упростить (объединить одинаковые степени)
+    friend std::istream& operator>>(std::istream& is, Polynomial& p);
+    friend std::ostream& operator<<(std::ostream& os, const Polynomial& p);
     
-    friend std::istream& operator>>(std::istream& in, Polynomial& p);
-    friend std::ostream& operator<<(std::ostream& out, const Polynomial& p);
-    
-    Polynomial operator+(const Polynomial& other);
-    Polynomial operator*(const Polynomial& other);
+    Polynomial operator+(const Polynomial& other) const;
+    Polynomial operator*(const Polynomial& other) const;
 };
 
 #endif
