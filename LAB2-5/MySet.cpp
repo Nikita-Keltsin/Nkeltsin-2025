@@ -83,7 +83,7 @@ public:
     }
 };
 
-// Специализация для char*
+
 template <>
 class MySet<char*> : public MyVector<char*> {
 public:
